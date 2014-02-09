@@ -1,0 +1,82 @@
+<html>
+<head>
+  <script src="https://cdn.firebase.com/v0/firebase.js"></script>
+  <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js'></script>
+    <script type='text/javascript'
+       src='https://cdn.firebase.com/js/simple-login/1.2.1/firebase-simple-login.js'>
+</script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <h1>Welcome to Unstumped</h1>
+<!-- <div id='messagesDiv'></div> -->
+<div id='messagesDiv'></div>
+<div id='responseDiv'></div>
+<input type='text' id='nameInput' placeholder='Name'>
+<input type='text' id='messageInput' placeholder='Message...'>
+<script>
+
+  var userRef = new Firebase('https://unstumped.firebaseIO.com');
+  var auth = new FirebaseSimpleLogin(userRef, function(error, user) {
+    var userid;
+    if (error) {
+      // an error occurred while attempting login
+      console.log(error);
+    } else if (!user) {
+      // user is logged out
+      auth.login('anonymous');      // user authenticated with Firebase
+    } else {
+      console.log('User ID: ' + user.id + ', Provider: ' + user.provider);
+      
+      var chatid = window.location.hash.replace('#','');
+      
+      if(chatid.length>0) {
+        var threadRef = userRef.child('users').child(chatid);
+      } else {
+        var threadRef = userRef.child('users').child(user.id);
+      }
+
+      // When the user presses enter on the message input, write the message to firebase.
+      $('#messageInput').keypress(function (e) {
+        if (e.keyCode == 13) {
+          var name = $('#nameInput').val();
+          //if something is wrong with name, make popup telling what error is and return;
+          if(name.length <= 0){//compares strings
+            alert("Please enter a name.");
+            return;
+          }
+          if(name.length > 20){
+            alert("Please enter a name less than 20 characters long.");
+            return;
+          }
+          if(unNaturalCharacters(name)){
+            alert("Please enter a name that contains only numbers and letters.");
+            return;
+          }
+          var text = $('#messageInput').val();//if text is left blank, TA still sees it as message
+          
+          // messagesRef.child('#nameInput').set({text: text});
+          threadRef.push({name:name, text:text, user: user.id});
+          $('#messageInput').val('');
+        }
+      });
+      //returns true if there is any characters that are not letters from a-z, spaces, or numerical characters
+      function unNaturalCharacters(name){
+        //return name.match(/*need to put regex to detect unnatural character here*/);
+        var re = /[^0-9a-zA-Z ' _ -]/;//we are assuming that a malicious javascript injection will have an unnatural character;
+        return name.match(re);
+      }
+
+      // Add a callback that is triggered for each chat message.
+      threadRef.limit(10).on('child_added', function (snapshot) {
+        var message = snapshot.val();
+        $('<div/>').text(message.text).prepend($('<em/>')
+          .text(message.name+': ')).appendTo($('#messagesDiv'));
+        $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
+      }); 
+    }
+  
+  });
+</script>
+</body>
+</html>
