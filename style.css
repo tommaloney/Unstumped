@@ -1,0 +1,105 @@
+/* Global */
+
+body {
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 500px;
+  background-image: url('dea1f4e510fc236701d568c62a1337f614.jpg');
+  font-size: 24px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #424547;
+  text-align: center;
+}
+
+h1 {
+  font-size: 36px;
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: green;
+}
+
+h3 {
+  font-size: 24px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #424547;
+}
+
+p {
+ font-size: 16px;
+}
+
+input {
+  font-size: 24px;
+}
+
+input[type=text] {
+  color: #424547;
+  border: 1px solid #c2c2c2;
+  background-color: white;
+}
+
+input[type=submit] {
+  height: 150px;
+  width: 150px;
+  font-size: 20px;
+  border: 2px solid #000000;
+  border-radius: 5%;
+}
+
+#tabutton {
+  height: 150px;
+  width: 150px;
+  font-size: 20px;
+  border: 2px solid #000000;
+  border-radius: 5%;
+  background-color: #a1cedd;
+}
+
+#stubutton {
+  
+  height: 150px;
+  width: 150px;
+  font-size: 20px;
+  border: 2px solid #000000;
+  border-radius: 5%;background-color: #e57b7f;
+}
+
+em {
+  font-style: normal;
+  font-weight: bold;
+  color: black;
+
+}
+
+/* Chat */
+#messagesDiv {
+  background-color: white;
+  overflow: auto;
+  height: 230px;
+  width: 100%;
+  padding: 10px;
+  border: 8px solid #424547;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+#messageSpan {
+  background-color: white;
+  overflow: auto;
+  height: 230px;
+  width: 500px;
+  padding: 10px;
+  border: 8px solid #424547;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+#nameInput {
+  width: 26%;
+}
+
+#messageInput {
+  width: 68%;
+}
+
