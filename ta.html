@@ -1,0 +1,57 @@
+<html>
+<head>
+  <script src="https://cdn.firebase.com/v0/firebase.js"></script>
+  <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js'></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <h1>Welcome TA!</h1>
+
+
+<ul id="usernames">
+  <!-- usernames will be entered here via Javascript -->
+</ul>
+
+
+<script>
+
+  // Get a reference to the root of the chat data.s
+  var messagesRef = new Firebase('https://unstumped.firebaseIO.com/users');
+
+  // When the user presses enter on the message input, write the message to firebase.
+  $('#messageInput').keypress(function (e) {
+    if (e.keyCode == 13) {
+      var taResponse = $('#responseDiv').val();
+      displayChatMessage(taResponse);
+      // messagesRef.set(nameToSendResponseTo).set()
+    }
+  });
+
+  var res = $("responseDiv").val();
+
+  var usernames = [];
+
+  messagesRef.on('child_added', function (snapshot){
+    var messages      = snapshot.val();
+    var iterator      = 0;
+    var message_size  = _.size(messages);
+
+    _.each(messages, function(message, key, list) {
+      iterator += 1;
+
+      if (iterator >= message_size) {
+        // this code puts them where you want.
+        $("ul#usernames").append('<li data-id="' + message.user + '"><a href="student.html#' + message.user + '">' + message.name+"</a></li>");
+      }
+    });
+  });
+
+  messagesRef.on('child_changed', function (snapshot){
+    location.reload();
+    
+  });
+
+</script>
+</body>
+</html>
